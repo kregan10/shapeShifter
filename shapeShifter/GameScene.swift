@@ -8,6 +8,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var contentCreated = false
     
     private var ship = SKNode()
+    private var shipTriangle = SKNode()
+    private var shipOctagon = SKNode()
+    private var shipSquare = SKNode()
+
     private var key = Key()
     
     // UI colors and dimensions of backgroud shapes
@@ -266,10 +270,38 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 if let child = self.childNode(withName: "key") as? SKShapeNode {
                     print("Removing key")
                     child.removeFromParent()
+                    shipTriangle = key.morphToTriangle()
+                    shipTriangle.position = ship.position
+                    ship.removeFromParent()
                     isKeyOnScreen = false
-                    self.removeChildren(in: [ship])
-                    ship = key.morphToTriangle()
-                    self.addChild(ship)
+                    
+                    self.addChild(shipTriangle)
+//                    if let currShip = self.childNode(withName: "ship") as? SKShapeNode {
+//                        print("Removing key")
+//
+//                        switch key.shapeKey[key.currShape] {
+//                        case "triangle":
+//                            shipTriangle = key.morphToTriangle()
+//                            shipTriangle.position = currShip.position
+//                            self.addChild(shipTriangle)
+//                            
+//                        case "square":
+//                            shipSquare = key.morphToSquare()
+//                            self.addChild(shipSquare)
+//                            shipSquare.position = currShip.position
+//                        case "octagon":
+//                            shipOctagon = key.morphToOctagon()
+//                            self.addChild(shipOctagon)
+//                            shipOctagon.position = currShip.position
+//
+//
+//                        default:
+//                            print("No shape returned from key")
+//                        }
+//                        child.removeFromParent()
+//
+//                        ship.removeFromParent()
+//                        isKeyOnScreen = false
                     
                 }
             }
@@ -357,11 +389,12 @@ extension CGFloat {
     }
 }
 
-extension SKNode {
+extension SKShapeNode {
     
     // Ship's radius is 30.0
-    func morphToTriangle() -> SKNode {
+    func morphToTriangle() -> SKShapeNode {
         let tronBlue = UIColor(red: (24.0/255), green: (202.0/255), blue: (230/255), alpha: 1.0)
+        let kShipSize = CGSize(width: 30, height: 16)
 
         let path = UIBezierPath()
         path.move(to: CGPoint(x: 0.0, y: 30.0))
@@ -377,9 +410,7 @@ extension SKNode {
         triangle.physicsBody!.restitution = 0.5
         triangle.physicsBody!.mass = 0.02
         triangle.physicsBody!.collisionBitMask = 0b0001
-
-        
-        
+        triangle.position = CGPoint(x: -20.0, y: -20.0)
         return triangle
     }
     

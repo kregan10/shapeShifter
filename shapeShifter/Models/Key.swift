@@ -38,6 +38,7 @@ class Key : SKShapeNode {
         self.physicsBody?.affectedByGravity = false
         self.physicsBody?.isDynamic = false
         self.physicsBody!.contactTestBitMask = 0b0010
+        self.setKey()
     }
     
     func getKey() -> String {

@@ -314,7 +314,7 @@
 				DEVELOPMENT_TEAM = AR97668G6G;
 				INFOPLIST_FILE = shapeShifter/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = kerryregan.shapeShifter;
+				PRODUCT_BUNDLE_IDENTIFIER = ca.bcit.comp4977.shapeShifter;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -329,7 +329,7 @@
 				DEVELOPMENT_TEAM = AR97668G6G;
 				INFOPLIST_FILE = shapeShifter/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = kerryregan.shapeShifter;
+				PRODUCT_BUNDLE_IDENTIFIER = ca.bcit.comp4977.shapeShifter;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
