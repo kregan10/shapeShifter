@@ -15,6 +15,10 @@
 		7EF6D43C205DCDB800E561DE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7EF6D43A205DCDB800E561DE /* Main.storyboard */; };
 		7EF6D43E205DCDB800E561DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7EF6D43D205DCDB800E561DE /* Assets.xcassets */; };
 		7EF6D441205DCDB800E561DE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7EF6D43F205DCDB800E561DE /* LaunchScreen.storyboard */; };
+		7EF6D449205DFDFB00E561DE /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF6D448205DFDFB00E561DE /* Key.swift */; };
+		7EF6D44B205E04C200E561DE /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF6D44A205E04C100E561DE /* GameOverScene.swift */; };
+		7EF6D450205F3D8E00E561DE /* BackgroundShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF6D44F205F3D8E00E561DE /* BackgroundShape.swift */; };
+		7EF6D452205F479900E561DE /* Ship.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF6D451205F479900E561DE /* Ship.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +32,10 @@
 		7EF6D43D205DCDB800E561DE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7EF6D440205DCDB800E561DE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7EF6D442205DCDB800E561DE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7EF6D448205DFDFB00E561DE /* Key.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Key.swift; sourceTree = "<group>"; };
+		7EF6D44A205E04C100E561DE /* GameOverScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
+		7EF6D44F205F3D8E00E561DE /* BackgroundShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundShape.swift; sourceTree = "<group>"; };
+		7EF6D451205F479900E561DE /* Ship.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ship.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,9 +68,11 @@
 		7EF6D42F205DCDB800E561DE /* shapeShifter */ = {
 			isa = PBXGroup;
 			children = (
+				7EF6D44E205F3D6F00E561DE /* Models */,
 				7EF6D430205DCDB800E561DE /* AppDelegate.swift */,
 				7EF6D432205DCDB800E561DE /* GameScene.sks */,
 				7EF6D434205DCDB800E561DE /* Actions.sks */,
+				7EF6D44A205E04C100E561DE /* GameOverScene.swift */,
 				7EF6D436205DCDB800E561DE /* GameScene.swift */,
 				7EF6D438205DCDB800E561DE /* GameViewController.swift */,
 				7EF6D43A205DCDB800E561DE /* Main.storyboard */,
@@ -71,6 +81,16 @@
 				7EF6D442205DCDB800E561DE /* Info.plist */,
 			);
 			path = shapeShifter;
+			sourceTree = "<group>";
+		};
+		7EF6D44E205F3D6F00E561DE /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				7EF6D448205DFDFB00E561DE /* Key.swift */,
+				7EF6D44F205F3D8E00E561DE /* BackgroundShape.swift */,
+				7EF6D451205F479900E561DE /* Ship.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -147,9 +167,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7EF6D44B205E04C200E561DE /* GameOverScene.swift in Sources */,
 				7EF6D437205DCDB800E561DE /* GameScene.swift in Sources */,
+				7EF6D449205DFDFB00E561DE /* Key.swift in Sources */,
 				7EF6D439205DCDB800E561DE /* GameViewController.swift in Sources */,
 				7EF6D431205DCDB800E561DE /* AppDelegate.swift in Sources */,
+				7EF6D452205F479900E561DE /* Ship.swift in Sources */,
+				7EF6D450205F3D8E00E561DE /* BackgroundShape.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
