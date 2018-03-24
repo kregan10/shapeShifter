@@ -8,10 +8,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var contentCreated = false
     
     private var ship = SKNode()
-    private var shipTriangle = SKNode()
-    private var shipOctagon = SKNode()
-    private var shipSquare = SKNode()
-
+//    private var shipTriangle = SKNode()
+//    private var shipOctagon = SKNode()
+//    private var shipSquare = SKNode()
+//
     private var key = Key()
     
     // UI colors and dimensions of backgroud shapes
@@ -226,11 +226,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func processUserMotion(forUpdate currentTime: CFTimeInterval) {
-        // 1
         if let ship = childNode(withName: kShipName) as? SKShapeNode {
-            // 2
             if let data = motionManager.accelerometerData {
-                // 3
                 if fabs(data.acceleration.x) > 0.2 {
                     print("Acceleration: \(data.acceleration.x)")
                     ship.physicsBody!.applyForce(CGVector(dx: 40 * CGFloat(data.acceleration.x), dy: 0))
@@ -267,42 +264,38 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 adjustScore(by: 10)
                 
                 // checking if the child node with the name key is in contact
-                if let child = self.childNode(withName: "key") as? SKShapeNode {
-                    print("Removing key")
-                    child.removeFromParent()
-                    shipTriangle = key.morphToTriangle()
-                    shipTriangle.position = ship.position
-                    ship.removeFromParent()
-                    isKeyOnScreen = false
+                if let currKey = self.childNode(withName: "key") as? SKShapeNode {
                     
-                    self.addChild(shipTriangle)
-//                    if let currShip = self.childNode(withName: "ship") as? SKShapeNode {
-//                        print("Removing key")
-//
-//                        switch key.shapeKey[key.currShape] {
-//                        case "triangle":
-//                            shipTriangle = key.morphToTriangle()
-//                            shipTriangle.position = currShip.position
-//                            self.addChild(shipTriangle)
-//                            
-//                        case "square":
-//                            shipSquare = key.morphToSquare()
-//                            self.addChild(shipSquare)
-//                            shipSquare.position = currShip.position
-//                        case "octagon":
-//                            shipOctagon = key.morphToOctagon()
-//                            self.addChild(shipOctagon)
-//                            shipOctagon.position = currShip.position
-//
-//
-//                        default:
-//                            print("No shape returned from key")
-//                        }
-//                        child.removeFromParent()
-//
-//                        ship.removeFromParent()
-//                        isKeyOnScreen = false
-                    
+                    if let currShip = self.childNode(withName: "ship") as? SKShapeNode {
+                        print("Removing key")
+                        let pos = currShip.position
+                        switch key.shapeKey[key.currShape] {
+                            case "triangle":
+                                print("triangle")
+                                ship.removeFromParent()
+                                ship = key.morphToTriangle()
+                                self.addChild(ship)
+                                ship.position = pos
+                            case "square":
+                                print("square")
+                                ship.removeFromParent()
+                                ship = key.morphToSquare()
+                                self.addChild(ship)
+                                ship.position = pos
+                            case "octagon":
+                                print("octagon")
+                                ship.removeFromParent()
+                                ship = key.morphToOctagon()
+                                self.addChild(ship)
+                                ship.position = pos
+                            default:
+                                print("No shape returned from key")
+                        }
+                        currKey.removeFromParent()
+                        
+                        
+                        isKeyOnScreen = false
+                    }
                 }
             }
         }
@@ -321,20 +314,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             view?.presentScene(gameOverScene, transition: SKTransition.doorsOpenHorizontal(withDuration: 1.0))
         }
     }
-    
-    // Scene Update Helpers
-    
-    // Invader Movement Helpers
-    
-    // Bullet Helpers
-    
-    // User Tap Helpers
-    
-    // HUD Helpers
-    
-    // Physics Contact Helpers
-    
-    // Game End Helpers
     
     func polygonPointArray(sides:Int, x:CGFloat, y:CGFloat, radius:CGFloat, offset:CGFloat) -> [CGPoint] {
         let angle = (360/CGFloat(sides)).radians()
@@ -393,36 +372,104 @@ extension SKShapeNode {
     
     // Ship's radius is 30.0
     func morphToTriangle() -> SKShapeNode {
+        
         let tronBlue = UIColor(red: (24.0/255), green: (202.0/255), blue: (230/255), alpha: 1.0)
         let kShipSize = CGSize(width: 30, height: 16)
-
+        let shipGlowWidth = CGFloat(3.0)
         let path = UIBezierPath()
-        path.move(to: CGPoint(x: 0.0, y: 30.0))
-        path.addLine(to: CGPoint(x: 46.12, y: 0.0))
-        path.addLine(to: CGPoint(x: -46.12, y: 0.0))
-        path.addLine(to: CGPoint(x: 0.0, y: 30.0))
+        
+        path.move(to: CGPoint(x: 0.0, y: 35.0))
+        path.addLine(to: CGPoint(x: 40.0, y: 0.0))
+        path.addLine(to: CGPoint(x: -40.0, y: 0.0))
+        path.addLine(to: CGPoint(x: 0.0, y: 35.0))
+        
         let triangle = SKShapeNode(path: path.cgPath)
+        
         triangle.strokeColor = tronBlue
         triangle.name = "ship"
-        triangle.physicsBody = SKPhysicsBody(rectangleOf: triangle.frame.size)
+        triangle.physicsBody = SKPhysicsBody(polygonFrom: path.cgPath)
         triangle.physicsBody!.isDynamic = true
         triangle.physicsBody!.affectedByGravity = false
         triangle.physicsBody!.restitution = 0.5
         triangle.physicsBody!.mass = 0.02
         triangle.physicsBody!.collisionBitMask = 0b0001
-        triangle.position = CGPoint(x: -20.0, y: -20.0)
+        triangle.glowWidth = shipGlowWidth
+        
         return triangle
     }
     
-    func morphToSquare() -> SKNode {
-        var square = SKNode()
+    func morphToSquare() -> SKShapeNode {
+        
+        let squareSize = CGSize(width: 50, height: 50)
+        let shipGlowWidth = CGFloat(3.0)
+        let square = SKShapeNode(rectOf: squareSize)
+        let tronBlue = UIColor(red: (24.0/255), green: (202.0/255), blue: (230/255), alpha: 1.0)
+        
+        square.name = "ship"
+        square.strokeColor = tronBlue
+        square.physicsBody = SKPhysicsBody(rectangleOf: squareSize)
+        square.physicsBody!.isDynamic = true
+        square.physicsBody!.affectedByGravity = false
+        square.physicsBody!.restitution = 0.5
+        square.physicsBody!.mass = 0.02
+        square.physicsBody!.collisionBitMask = 0b0001
+        square.glowWidth = shipGlowWidth
+
         return square
     }
     
-    func morphToOctagon() -> SKNode {
-        var octagon = SKNode()
+    func morphToOctagon() -> SKShapeNode {
+        
+        let tronBlue = UIColor(red: (24.0/255), green: (202.0/255), blue: (230/255), alpha: 1.0)
+        let path = polygonPath(x: 0.0, y: 0.0, radius: 30, sides: 8, offset: 0.0)
+        let octagon = SKShapeNode(path: path)
+        let shipGlowWidth = CGFloat(3.0)
+
+        octagon.strokeColor = tronBlue
+        octagon.name = "ship"
+        octagon.physicsBody = SKPhysicsBody(polygonFrom: path)
+        octagon.physicsBody!.isDynamic = true
+        octagon.physicsBody!.affectedByGravity = false
+        octagon.physicsBody!.restitution = 0.5
+        octagon.physicsBody!.mass = 0.02
+        octagon.physicsBody!.collisionBitMask = 0b0001
+        octagon.glowWidth = shipGlowWidth
+
         return octagon
+        
     }
+    
+    func polygonPointArray(sides:Int, x:CGFloat, y:CGFloat, radius:CGFloat, offset:CGFloat) -> [CGPoint] {
+        
+        let angle = (360/CGFloat(sides)).radians()
+        let cx = x // x origin
+        let cy = y // y origin
+        let r = radius // radius of circle
+        var i = 0
+        var points = [CGPoint]()
+        while i <= sides {
+            let xpo = cx + r * cos(angle * CGFloat(i) - offset.radians())
+            let ypo = cy + r * sin(angle * CGFloat(i) - offset.radians())
+            points.append(CGPoint(x: xpo, y: ypo))
+            i = i + 1
+        }
+        return points
+    }
+    
+    func polygonPath(x:CGFloat, y:CGFloat, radius:CGFloat, sides:Int, offset: CGFloat) -> CGPath {
+        
+        let path = CGMutablePath()
+        let points = polygonPointArray(sides: sides,x: x,y: y,radius: radius, offset: offset)
+        let cpg = points[0]
+        path.move(to: cpg)
+        
+        for p in points {
+            path.addLine(to: p)
+        }
+        path.closeSubpath()
+        return path
+    }
+    
 }
 
 
