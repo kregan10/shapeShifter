@@ -272,7 +272,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             return
         }
         
-        
+        let pos = ship.position
         if ship.intersects(backgroundTriangle) {
             // If the current shape matches what the key requests then increase health and score
             // If the current shape does not match the background, then reduce the ship health
@@ -283,6 +283,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 self.adjustScore(by: 50)
                 print("Intersecting triangle")
                 hasRetrievedKey = true
+                ship.removeFromParent()
+                ship = self.makeShip()
+                self.addChild(ship)
+                ship.position = pos
+                ship.zPosition = 10
+                
             }
             
             if key.getKey() != "triangle" {
@@ -303,7 +309,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 self.adjustScore(by: 50)
                 print("Intersecting square")
                 hasRetrievedKey = true
-            }
+                ship.removeFromParent()
+                ship = self.makeShip()
+                self.addChild(ship)
+                ship.position = pos
+                ship.zPosition = 10            }
             
             if key.getKey() != "square" {
                 self.backgroundSquare.fillColor = UIColor.red
@@ -320,7 +330,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 self.adjustScore(by: 50)
                 print("Intersecting octagon")
                 hasRetrievedKey = true
-            }
+                ship.removeFromParent()
+                ship = self.makeShip()
+                self.addChild(ship)
+                ship.position = pos
+                ship.zPosition = 10            }
             
             if key.getKey() != "octagon" {
                 self.backgroundOctagon.fillColor = UIColor.red
