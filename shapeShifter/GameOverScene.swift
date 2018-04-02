@@ -28,6 +28,7 @@ class GameOverScene: SKScene {
   
   var contentCreated = false
   
+    var userScore: Int = 0
   // Object Lifecycle Management
   
   // Scene Setup and Content Creation
@@ -49,6 +50,14 @@ class GameOverScene: SKScene {
     gameOverLabel.position = CGPoint(x: self.size.width/2, y: 2.0 / 3.0 * self.size.height);
     
     self.addChild(gameOverLabel)
+    
+    let scoreLabel = SKLabelNode(fontNamed: "Courier")
+    scoreLabel.fontSize = 40
+    scoreLabel.fontColor = SKColor.white
+    scoreLabel.text = "Score: " + userScore.description
+    scoreLabel.position = CGPoint(x: self.size.width/2, y: 1.0 / 3.0 * self.size.height);
+    
+    self.addChild(scoreLabel)
     
     let tapLabel = SKLabelNode(fontNamed: "Courier")
     tapLabel.fontSize = 25

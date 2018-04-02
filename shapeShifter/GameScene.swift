@@ -9,9 +9,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private var ship = SKNode()
     private var key = Key()
-    private var backgroundTriangle = SKShapeNode()
-    private var backgroundSquare = SKShapeNode()
-    private var backgroundOctagon = SKShapeNode()
+    var backgroundTriangle = SKShapeNode()
+    var backgroundSquare = SKShapeNode()
+    var backgroundOctagon = SKShapeNode()
     
     // UI colors and dimensions of backgroud shapes
    
@@ -19,7 +19,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let backgroundShapeWidths = CGFloat(165.0)
     let tronBlue = UIColor(red: (24.0/255), green: (202.0/255), blue: (230/255), alpha: 1.0)
 
-    
     var contactQueue = [SKPhysicsContact]()
 
     private var isKeyOnScreen = false
@@ -37,8 +36,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var score: Int = 0
     var shipHealth: Float = 1.0
     
+    
     var gameEnding: Bool = false
-
+    
+    var hasTexturesBeenSet = false
     
     let kShipSize = CGSize(width: 30, height: 16)
     let kShipName = "ship"
@@ -53,6 +54,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             self.contentCreated = true
             motionManager.startAccelerometerUpdates()
             physicsWorld.contactDelegate = self
+            print("didMove")
             self.hasRetrievedKey = false
         }
     }
@@ -62,13 +64,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         setupShip()
         setupHud()
         setupBackgroundShapes()
-        
+
         // black space color
         self.backgroundColor = SKColor.black
     }
     
     func setupShip() {
         ship = makeShip()
+        ship.zPosition = 10
         ship.position = CGPoint(x: size.width / 2.0, y: kShipSize.height / 2.0)
         
         addChild(ship)
@@ -110,6 +113,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             key.position.x = randomX
             key.position.y = randomY
             key.position = CGPoint(x: size.width / 2.0, y: ((size.height / 6.0) * 3.0))
+            key.zPosition = 10
             addChild(key)
             isKeyOnScreen = true
             self.timeOfLastKeySpawn = currentTime
@@ -125,7 +129,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func adjustScore(by points: Int) {
         score += points
-        
         if let score = childNode(withName: kScoreHudName) as? SKLabelNode {
             score.text = String(format: "Score: %04u", self.score)
         }
@@ -152,6 +155,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let triangle = BackgroundShape(path: path.cgPath)
         triangle.strokeColor = tronBlue
         triangle.name = "triangle"
+        triangle.fillColor = .black
         return triangle
     }
     
@@ -162,6 +166,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                                           cornerRadius: 3)
         square.strokeColor = tronBlue
         square.name = "square"
+        square.fillColor = .black
         return square
         
     }
@@ -172,6 +177,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let octagon = BackgroundShape(path: path)
         octagon.strokeColor = tronBlue
         octagon.name = "octagon"
+        octagon.fillColor = .black
         return octagon
         
     }
@@ -273,8 +279,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if key.getKey() == "triangle"  && !hasRetrievedKey {
 
                 self.backgroundTriangle.fillColor = UIColor.green
-//                let colorizeAction = SKAction.colorize(with: UIColor.green, colorBlendFactor: 1.0, duration: 1.0)
-//                backgroundTriangle.run(colorizeAction)
                 self.adjustShipHealth(by: 0.25)
                 self.adjustScore(by: 50)
                 print("Intersecting triangle")
@@ -295,10 +299,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if key.getKey() == "square" {
 
                 self.backgroundSquare.fillColor = UIColor.green
-                
-//                let colorizeAction = SKAction.colorize(with: UIColor.green, colorBlendFactor: 1.0, duration: 1.0)
-//                backgroundSquare.run(colorizeAction)
-                
                 self.adjustShipHealth(by: 0.25)
                 self.adjustScore(by: 50)
                 print("Intersecting square")
@@ -316,10 +316,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if ship.intersects(backgroundOctagon) && !hasRetrievedKey{
             if key.getKey() == "octagon" {
                 self.backgroundOctagon.fillColor = UIColor.green
-                
-//                let colorizeAction = SKAction.colorize(with: UIColor.green, colorBlendFactor: 1.0, duration: 1.0)
-//                backgroundOctagon.run(colorizeAction)
-                
                 self.adjustShipHealth(by: 0.25)
                 self.adjustScore(by: 50)
                 print("Intersecting octagon")
@@ -359,18 +355,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                                 ship = key.morphToTriangle()
                                 self.addChild(ship)
                                 ship.position = pos
+                                ship.zPosition = 10
                             case "square":
                                 print("square")
                                 ship.removeFromParent()
                                 ship = key.morphToSquare()
                                 self.addChild(ship)
                                 ship.position = pos
+                                ship.zPosition = 10
                             case "octagon":
                                 print("octagon")
                                 ship.removeFromParent()
                                 ship = key.morphToOctagon()
                                 self.addChild(ship)
                                 ship.position = pos
+                                ship.zPosition = 10
                             default:
                                 print("No shape returned from key")
                         }
@@ -387,11 +386,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func endGame() {
-        // 1
         if !gameEnding {
             gameEnding = true
             motionManager.stopAccelerometerUpdates()
+            
             let gameOverScene: GameOverScene = GameOverScene(size: size)
+            gameOverScene.userScore = self.score
             view?.presentScene(gameOverScene, transition: SKTransition.doorsOpenHorizontal(withDuration: 1.0))
         }
     }
