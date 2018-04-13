@@ -34,24 +34,13 @@ class GameViewController: UIViewController {
         
         // Configure the view.
         let skView = self.view as! SKView
-        skView.showsFPS = true
-        skView.showsNodeCount = true
-        skView.showsPhysics = true;
-        
+
         /* Sprite Kit applies additional optimizations to improve rendering performance */
         skView.ignoresSiblingOrder = true
         
         // Create and configure the scene.
         let scene = GameScene(size: skView.frame.size)
         skView.presentScene(scene)
-//        topTriangleTexture = skView.texture(from: scene.backgroundTriangle)!
-//        midSquareTexture = skView.texture(from: scene.backgroundSquare)!
-//        botOctagonTexture = skView.texture(from: scene.backgroundOctagon)!
-//        
-//        scene.backgroundTriangleSprite = SKSpriteNode(texture: topTriangleTexture)
-//        scene.backgroundSquareSprite = SKSpriteNode(texture: midSquareTexture)
-//        scene.backgroundOctagonSprite = SKSpriteNode(texture: botOctagonTexture)
-
         
         // Pause the view (and thus the game) when the app is interrupted or backgrounded
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.handleApplicationWillResignActive(_:)), name: NSNotification.Name.UIApplicationWillResignActive, object: nil)
