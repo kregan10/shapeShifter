@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7E003A8D2072DEB500F8EAE9 /* shapeShiftLifeBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E003A8B2072DEB400F8EAE9 /* shapeShiftLifeBackground.png */; };
+		7E003A8E2072DEB500F8EAE9 /* shapShifterLifeSquare.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E003A8C2072DEB400F8EAE9 /* shapShifterLifeSquare.png */; };
 		7EF6D431205DCDB800E561DE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF6D430205DCDB800E561DE /* AppDelegate.swift */; };
 		7EF6D433205DCDB800E561DE /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 7EF6D432205DCDB800E561DE /* GameScene.sks */; };
 		7EF6D435205DCDB800E561DE /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 7EF6D434205DCDB800E561DE /* Actions.sks */; };
@@ -22,6 +24,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7E003A8B2072DEB400F8EAE9 /* shapeShiftLifeBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shapeShiftLifeBackground.png; sourceTree = "<group>"; };
+		7E003A8C2072DEB400F8EAE9 /* shapShifterLifeSquare.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shapShifterLifeSquare.png; sourceTree = "<group>"; };
 		7EF6D42D205DCDB800E561DE /* shapeShifter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = shapeShifter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7EF6D430205DCDB800E561DE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7EF6D432205DCDB800E561DE /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -75,6 +79,8 @@
 				7EF6D44A205E04C100E561DE /* GameOverScene.swift */,
 				7EF6D436205DCDB800E561DE /* GameScene.swift */,
 				7EF6D438205DCDB800E561DE /* GameViewController.swift */,
+				7E003A8B2072DEB400F8EAE9 /* shapeShiftLifeBackground.png */,
+				7E003A8C2072DEB400F8EAE9 /* shapShifterLifeSquare.png */,
 				7EF6D43A205DCDB800E561DE /* Main.storyboard */,
 				7EF6D43D205DCDB800E561DE /* Assets.xcassets */,
 				7EF6D43F205DCDB800E561DE /* LaunchScreen.storyboard */,
@@ -155,7 +161,9 @@
 				7EF6D43C205DCDB800E561DE /* Main.storyboard in Resources */,
 				7EF6D433205DCDB800E561DE /* GameScene.sks in Resources */,
 				7EF6D43E205DCDB800E561DE /* Assets.xcassets in Resources */,
+				7E003A8E2072DEB500F8EAE9 /* shapShifterLifeSquare.png in Resources */,
 				7EF6D441205DCDB800E561DE /* LaunchScreen.storyboard in Resources */,
+				7E003A8D2072DEB500F8EAE9 /* shapeShiftLifeBackground.png in Resources */,
 				7EF6D435205DCDB800E561DE /* Actions.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

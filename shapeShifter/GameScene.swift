@@ -36,6 +36,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var score: Int = 0
     var shipHealth: Float = 1.0
     
+    var healthBar: SKSpriteNode!
+    var healthBorder: SKSpriteNode!
+    
     
     var gameEnding: Bool = false
     
@@ -95,12 +98,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func spawnRandomKey(forUpdate currentTime: CFTimeInterval) {
 
-        print("spawnRandomKey currentTime " + String(describing: currentTime))
-        print("spawnRandomKey timeOfLastKeySpawn " + String(describing: timeOfLastKeySpawn) )
-        print("spawnRandomKey timePerKeySpawn " + String(describing: timePerKeySpawn) )
-        print("spawnRandomKey isKeyOnScreen " + String(describing: isKeyOnScreen) )
-        // If 5 seconds hasn't passed, or if there is a key already on the screen,
-        // we wont spawn another one
         if (currentTime - timeOfLastKeySpawn < timePerKeySpawn)  || isKeyOnScreen {
             return
         }
@@ -112,13 +109,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let randomX = CGFloat(arc4random_uniform(UInt32(size.height - 20)) + 20)
             key.position.x = randomX
             key.position.y = randomY
-            key.position = CGPoint(x: size.width / 2.0, y: ((size.height / 6.0) * 3.0))
+            key.position = CGPoint(x: frame.size.width * random(min: 0, max: 1), y: frame.size.height * random(min: 0, max: 1))
             key.zPosition = 10
             addChild(key)
             isKeyOnScreen = true
-            self.timeOfLastKeySpawn = currentTime
         }
-        
+    }
+    
+    func random() -> CGFloat {
+        return CGFloat(Float(arc4random()) / 0xFFFFFFFF)
+    }
+    
+    func random(min: CGFloat, max: CGFloat) -> CGFloat {
+        return random() * (max - min) + min
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
@@ -218,7 +221,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             x: frame.size.width / 2,
             y: size.height - (40 + scoreLabel.frame.size.height/2)
         )
-        
         addChild(scoreLabel)
         
         let healthLabel = SKLabelNode(fontNamed: "Courier")
@@ -254,7 +256,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if isGameOver() {
             endGame()
         }
-        processUserGettingKey()
+        processUserGettingKey(forUpdate: currentTime)
         processUserMotion(forUpdate: currentTime)
         spawnRandomKey(forUpdate: currentTime)
         processUserOverBackgroundShapes(forUpdate: currentTime)
@@ -272,17 +274,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             return
         }
         
-        
-        if ship.intersects(backgroundTriangle) {
+        let pos = ship.position
+        if ship.intersects(backgroundTriangle) && !hasRetrievedKey  {
             // If the current shape matches what the key requests then increase health and score
             // If the current shape does not match the background, then reduce the ship health
-            if key.getKey() == "triangle"  && !hasRetrievedKey {
+            if key.getKey() == "triangle" {
 
                 self.backgroundTriangle.fillColor = UIColor.green
                 self.adjustShipHealth(by: 0.25)
                 self.adjustScore(by: 50)
                 print("Intersecting triangle")
                 hasRetrievedKey = true
+                ship.removeFromParent()
+                ship = self.makeShip()
+                self.addChild(ship)
+                ship.position = pos
+                ship.zPosition = 10
+                
             }
             
             if key.getKey() != "triangle" {
@@ -295,7 +303,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             self.backgroundTriangle.fillColor = UIColor.black
         }
         
-        if ship.intersects(backgroundSquare) && !hasRetrievedKey{
+        if ship.intersects(backgroundSquare) && !hasRetrievedKey {
             if key.getKey() == "square" {
 
                 self.backgroundSquare.fillColor = UIColor.green
@@ -303,7 +311,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 self.adjustScore(by: 50)
                 print("Intersecting square")
                 hasRetrievedKey = true
-            }
+                ship.removeFromParent()
+                ship = self.makeShip()
+                self.addChild(ship)
+                ship.position = pos
+                ship.zPosition = 10            }
             
             if key.getKey() != "square" {
                 self.backgroundSquare.fillColor = UIColor.red
@@ -320,7 +332,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 self.adjustScore(by: 50)
                 print("Intersecting octagon")
                 hasRetrievedKey = true
-            }
+                ship.removeFromParent()
+                ship = self.makeShip()
+                self.addChild(ship)
+                ship.position = pos
+                ship.zPosition = 10            }
             
             if key.getKey() != "octagon" {
                 self.backgroundOctagon.fillColor = UIColor.red
@@ -335,12 +351,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.timeOfLastKeySpawn = currentTime
     }
     
-    func processUserGettingKey() {
+    func processUserGettingKey(forUpdate currentTime: CFTimeInterval) {
         //checking if ship is in contact with key
         if let contacted = self.ship.physicsBody?.allContactedBodies() {
             if contacted.contains((self.key.physicsBody)!) {
                 // increment score
                 adjustScore(by: 10)
+                self.timeOfLastKeySpawn = currentTime
+
                 
                 // checking if the child node with the name key is in contact
                 if let currKey = self.childNode(withName: "key") as? SKShapeNode {
